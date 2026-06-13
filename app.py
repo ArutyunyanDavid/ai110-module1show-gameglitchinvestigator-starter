@@ -50,6 +50,19 @@ if "status" not in st.session_state:
 if "history" not in st.session_state:
     st.session_state.history = []
 
+# FIX: when the difficulty changes, start a fresh game for the new range so an
+# old secret (e.g. 50 from Normal) can't stay set and become unreachable in a
+# smaller range (e.g. Easy 1-20).
+if st.session_state.get("difficulty") != difficulty:
+    st.session_state.difficulty = difficulty
+    st.session_state.secret = random.randint(low, high)
+    st.session_state.attempts = 1
+    st.session_state.score = 0
+    st.session_state.status = "playing"
+    st.session_state.history = []
+    st.session_state.pop(f"guess_input_{difficulty}", None)
+    st.session_state.pop("hint", None)
+
 st.subheader("Make a guess")
 
 st.info(
