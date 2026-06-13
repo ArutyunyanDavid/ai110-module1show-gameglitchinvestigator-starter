@@ -19,10 +19,6 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
-
 | Secret = 60, guessed `100` | Hint says "Go Lower!" | Hint said "Go Higher!" | No console error; wrong hint text shown in UI |
 | Clicked "Start New Game" after a finished game | Fresh game: new secret, attempts/score/history reset, status active, input usable | Game stayed locked; score and history carried over and status was not reset | No console error; game state not reset in UI |
 | Clicked "Show Hint" button | A hint appears (e.g., even/odd or lower/upper half of range) | No hint appeared at all | No console error; nothing rendered |
