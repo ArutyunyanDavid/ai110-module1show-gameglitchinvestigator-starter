@@ -46,11 +46,15 @@ One incomplete suggestion was when Claude first only swapped the message strings
   and what it showed you about your code.
 - Did AI help you design or understand any tests? How?
 
+I decided a bug was really fixed only after checking both the code and the actual Streamlit webpage, not just one or the other. For automated testing I ran `python -m pytest tests/test_game_logic.py -v` and got `4 passed in 0.04s`, which checked winning guesses, too-high guesses, too-low guesses, and that the comparison was numeric instead of string-based. I also manually tested the webpage by guessing too high and too low, pressing New Game, pressing Show Hint, and entering out-of-range guesses to make sure each one behaved correctly. AI helped me understand why the numeric comparison test mattered, because comparing `"100"` and `"60"` as strings can give the wrong result even though the numbers look obvious. Running the tests after each fix gave me confidence that my changes worked and didn't break anything else.
+
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+
+The biggest thing I learned is that Streamlit reruns the entire script from top to bottom every time the user interacts with the page, like clicking a button or submitting a guess. That means a normal variable doesn't stick around — it gets created fresh and resets on every rerun, which is why the secret number kept changing. To fix that, you have to store anything you want to remember in `st.session_state`, which Streamlit keeps between reruns. In this game I used `st.session_state` to hold the secret number, attempts, score, status, history, and hint so they survive each rerun. The way I'd explain it to a friend: Streamlit re-reads the whole recipe every time you touch something, so anything you want it to remember has to go in a special box (`st.session_state`) instead of a regular variable.
 
 ---
 
@@ -60,3 +64,5 @@ One incomplete suggestion was when Claude first only swapped the message strings
   - This could be a testing habit, a prompting strategy, or a way you used Git.
 - What is one thing you would do differently next time you work with AI on a coding task?
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+
+One habit I want to reuse is testing one bug at a time and writing down the expected behavior before I change any code, so I always know what "fixed" should look like. I also want to keep using pytest and Git commits as checkpoints, because running the tests after each fix and committing working code made it easy to see progress and go back if something broke. Next time I would review the AI's diffs more carefully before accepting changes, since I sometimes trusted edits too quickly. I would also ask more focused prompts earlier instead of broad ones, which would have saved time. Overall, this project made me trust AI-generated code less blindly, because even code that looks polished can have hidden logic and state bugs.
